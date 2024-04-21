@@ -1,0 +1,121 @@
+using System; using
+System.Collections.Generic; using
+System.ComponentModel; using
+System.Data; using
+System.Data.SqlClient; using
+System.Drawing; using
+System.Linq; using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Configuration;
+namespace practical8
+{ public partial class Form1 :
+Form
+{
+public Form1()
+{
+InitializeComponent();
+DisplayData();
+}
+SqlConnection conn = new SqlConnection(&quot;Data Source=DESKTOP-SS3ETVB;Initial
+Catalog=StudentDatabase;Integrated Security=True&quot;);
+SqlCommand cmd; SqlDataAdapter adapt;
+private void Form1_Load(object sender, EventArgs e)
+{
+}
+
+private void btn_exit_Click(object sender, EventArgs e)
+{
+Application.Exit();
+}
+private void btn_insert_Click(object sender, EventArgs e)
+{
+
+string query = &quot;insert into StudentData values(&quot; + txt_stdid.Text + &quot;,&#39;&quot; + txt_stdname.Text + &quot;&#39;,&#39;&quot; +
+txt_address.Text + &quot;&#39;,&#39;&quot; + txt_class.Text + &quot;&#39;)&quot;; conn.Open(); cmd = new
+SqlCommand(query, conn); cmd.ExecuteNonQuery();
+MessageBox.Show(&quot;Inserted successfully&quot;);
+conn.Close();
+DisplayData();
+}
+private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+{
+if (e.RowIndex &gt;= 0)
+{
+DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+txt_stdid.Text = row.Cells[0].Value.ToString();
+txt_stdname.Text = row.Cells[1].Value.ToString();
+txt_address.Text = row.Cells[2].Value.ToString(); txt_class.Text
+= row.Cells[3].Value.ToString();
+}
+txt_stdid.Enabled = false;
+}
+private void DisplayData()
+{
+conn.Open();
+DataTable dt = new DataTable(); 
+adapt = new SqlDataAdapter(&quot;select * from StudentData&quot;,conn);
+adapt.Fill(dt);
+dataGridView1.DataSource = dt;
+conn.Close();
+}
+private void btn_find_Click(object sender, EventArgs e)
+{
+conn.Open();
+SqlCommand cmd = conn.CreateCommand(); 
+cmd.CommandType = CommandType.Text;
+cmd.CommandText = &quot;
+select * from StudentData where id=&#39;
+&quot;
++ txt_find.Text
++ &quot;&#39;&quot;;
+cmd.ExecuteNonQuery();
+DataTable dt = new DataTable();
+SqlDataAdapter da = new SqlDataAdapter(cmd);
+da.Fill(dt); 
+txt_stdid.Text = dt.ToString(); 
+txt_stdname.Text = dt.ToString(); 
+txt_address.Text = dt.ToString(); 
+txt_class.Text = dt.ToString();
+dataGridView1.DataSource = dt;
+conn.Close();
+}
+private void btn_update_Click(object sender, EventArgs e)
+{
+conn.Open();
+string query2 = &quot;UPDATE StudentData set name=&#39;&quot; + txt_stdname.Text + &quot;&#39;,address=&#39;&quot; + txt_address.Text +
+&quot;&#39;,class=&#39;&quot; + txt_class.Text + &quot;&#39; where id=&quot;+txt_stdid.Text+&quot;&quot;;
+cmd = new SqlCommand(query2, conn);
+cmd.ExecuteNonQuery(); conn.Close();
+MessageBox.Show(&quot;Updated successfully&quot;);
+DisplayData();
+}
+private void btn_showall_Click(object sender, EventArgs e)
+
+
+
+{
+DisplayData();
+}
+private void btn_delete_Click(object sender, EventArgs e)
+{
+string query = &quot;delete StudentData where id=&quot; + txt_stdid.Text + &quot;&quot;;
+conn.Open(); cmd = new SqlCommand(query, conn);
+cmd.ExecuteNonQuery();
+MessageBox.Show(&quot;deleted record&quot;);
+conn.Close();
+DisplayData();
+}
+}
+}
+App.Config-
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+&lt;configuration&gt;
+&lt;startup&gt;
+&lt;supportedRuntime version=&quot;v4.0&quot; sku=&quot;.NETFramework,Version=v4.5&quot; /&gt;
+&lt;/startup&gt;
+&lt;connectionStrings&gt;
+&lt;add name=&quot;ConnectionString&quot; connectionString=&quot;Data Source=DESKTOP-SS3ETVB;Initial
+Catalog=StudentDatabase;Integrated Security=True&quot; providerName=&quot;System.Data.Sqlclient&quot;/&gt;
+&lt;/connectionStrings&gt;
+&lt;/configuration&gt;
