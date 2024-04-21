@@ -18,9 +18,11 @@
             InitializeComponent(); 
             DisplayData(); 
         } 
-        SqlConnection conn = new SqlConnection("Data Source=DESKTOP-SS3ETVB;Initial 
-Catalog=StudentDatabase;Integrated Security=True"); 
-        SqlCommand cmd;         SqlDataAdapter adapt;         private void Form1_Load(object sender, EventArgs e) 
+        SqlConnection conn = new SqlConnection("Data Source=DESKTOP-SS3ETVB;Initial Catalog=StudentDatabase;Integrated Security=True"); 
+        SqlCommand cmd;     
+SqlDataAdapter adapt;       
+
+private void Form1_Load(object sender, EventArgs e) 
         { 
         } 
 
@@ -30,10 +32,15 @@ Catalog=StudentDatabase;Integrated Security=True");
         } 
         private void btn_insert_Click(object sender, EventArgs e) 
         { 
-            string query = "insert into StudentData values(" + txt_stdid.Text + ",'" + txt_stdname.Text + "','" + txt_address.Text + "','" + txt_class.Text + "')";             conn.Open();             cmd = new SqlCommand(query, conn);             cmd.ExecuteNonQuery(); 
-            MessageBox.Show("Inserted successfully");             conn.Close(); 
+            string query = "insert into StudentData values(" + txt_stdid.Text + ",'" + txt_stdname.Text + "','" + txt_address.Text + "','" + txt_class.Text + "')";             
+conn.Open();           
+cmd = new SqlCommand(query, conn);             
+cmd.ExecuteNonQuery(); 
+MessageBox.Show("Inserted successfully");       
+conn.Close(); 
             DisplayData(); 
         } 
+
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e) 
         { 
             if (e.RowIndex >= 0) 
