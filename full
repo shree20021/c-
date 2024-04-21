@@ -1,0 +1,85 @@
+/* using System; 
+ using System.Collections.Generic; 
+ using System.ComponentModel; 
+ using System.Data; 
+ using System.Data.SqlClient; 
+ using System.Drawing; 
+ using System.Linq; 
+ using System.Text; 
+ using System.Threading.Tasks; 
+ using System.Windows.Forms; 
+ using System.Configuration;
+ 
+ namespace practical8 
+{     public partial class Form1 : Form 
+    { 
+        public Form1() 
+        { 
+            InitializeComponent(); 
+            DisplayData(); 
+        } 
+        SqlConnection conn = new SqlConnection("Data Source=DESKTOP-SS3ETVB;Initial 
+Catalog=StudentDatabase;Integrated Security=True"); 
+        SqlCommand cmd;         SqlDataAdapter adapt;         private void Form1_Load(object sender, EventArgs e) 
+        { 
+        } 
+
+        private void btn_exit_Click(object sender, EventArgs e) 
+        { 
+            Application.Exit(); 
+        } 
+        private void btn_insert_Click(object sender, EventArgs e) 
+        { 
+            string query = "insert into StudentData values(" + txt_stdid.Text + ",'" + txt_stdname.Text + "','" + txt_address.Text + "','" + txt_class.Text + "')";             conn.Open();             cmd = new SqlCommand(query, conn);             cmd.ExecuteNonQuery(); 
+            MessageBox.Show("Inserted successfully");             conn.Close(); 
+            DisplayData(); 
+        } 
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e) 
+        { 
+            if (e.RowIndex >= 0) 
+            { 
+                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];                 txt_stdid.Text = row.Cells[0].Value.ToString();                 txt_stdname.Text = row.Cells[1].Value.ToString();                 txt_address.Text = row.Cells[2].Value.ToString();                 txt_class.Text = row.Cells[3].Value.ToString(); 
+            } 
+            txt_stdid.Enabled = false; 
+        } 
+        private void DisplayData() 
+        {             conn.Open(); 
+            DataTable dt = new DataTable();             adapt = new SqlDataAdapter("select * from StudentData",conn); 
+            adapt.Fill(dt);             dataGridView1.DataSource = dt;             conn.Close(); 
+        } 
+        private void btn_find_Click(object sender, EventArgs e) 
+        {             conn.Open();             SqlCommand cmd = conn.CreateCommand();             cmd.CommandType = CommandType.Text;             cmd.CommandText = "select * from StudentData where id='" + txt_find.Text + "'";             cmd.ExecuteNonQuery(); 
+            DataTable dt = new DataTable(); 
+            SqlDataAdapter da = new SqlDataAdapter(cmd); 
+            da.Fill(dt);             txt_stdid.Text = dt.ToString();             txt_stdname.Text = dt.ToString();             txt_address.Text = dt.ToString();             txt_class.Text = dt.ToString();             dataGridView1.DataSource = dt;             conn.Close(); 
+        } 
+        private void btn_update_Click(object sender, EventArgs e) 
+        {             conn.Open(); 
+            string query2 = "UPDATE StudentData set name='" + txt_stdname.Text + "',address='" + txt_address.Text + 
+"',class='" + txt_class.Text + "' where id="+txt_stdid.Text+"";             cmd = new SqlCommand(query2, conn);             cmd.ExecuteNonQuery();             conn.Close(); 
+            MessageBox.Show("Updated successfully"); 
+            DisplayData(); 
+        } 
+        private void btn_showall_Click(object sender, EventArgs e) 
+        { 
+            DisplayData(); 
+        } 
+        private void btn_delete_Click(object sender, EventArgs e) 
+        { 
+string query = "delete StudentData where id=" + txt_stdid.Text + "";             conn.Open();             cmd = new SqlCommand(query, conn); 
+            cmd.ExecuteNonQuery(); 
+            MessageBox.Show("deleted record");             conn.Close(); 
+            DisplayData(); 
+        } 
+    } 
+} 
+App.Config- 
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+<startup>
+<supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.5" /></startup>
+<connectionStrings>
+<add name="ConnectionString" connectionString="Data Source=DESKTOP-SS3ETVB;Initial 
+Catalog=StudentDatabase;Integrated Security=True" providerName="System.Data.Sqlclient"/>
+</connectionStrings>
+</configuration>*/
